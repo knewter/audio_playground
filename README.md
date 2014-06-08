@@ -68,3 +68,10 @@ For kicks, here's the output of that example:
 [                              x          ]
 [                                 x       ]
 ```
+
+I wrote a module that can sample an oscillator and generate a PCM .au file and
+pipe it through paplay.  To see an example of it in use:
+
+```sh
+mix run examples/pcm_sampler.exs
+```
