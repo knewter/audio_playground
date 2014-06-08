@@ -1,11 +1,25 @@
 alias AudioPlayground.PcmSampler
 alias AudioPlayground.Oscillators.SineWave
 
-w = %SineWave{frequency: 440}
-data = PcmSampler.file(w, 1)
+notes = [
+  a: 440,
+  b: 493.88,
+  c: 523.25,
+  d: 587.33
+]
 
-File.mkdir_p "examples/samples"
-filename = "examples/samples/440_1.au"
-File.write!(filename, data)
+duration = 1
 
-System.cmd("paplay #{filename}")
+for {note_name, frequency} <- notes do
+  IO.puts "playing #{note_name}"
+  w = %SineWave{frequency: frequency}
+  data = PcmSampler.file(w, duration)
+
+  File.mkdir_p "examples/samples"
+  filename = "examples/samples/#{frequency}_#{duration}.au"
+  File.write!(filename, data)
+
+  System.cmd("paplay #{filename}")
+
+  File.rm(filename)
+end
