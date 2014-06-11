@@ -3,7 +3,7 @@ alias AudioPlayground.Oscillators.SineWave
 alias AudioPlayground.Oscillators.SineWaveServer
 
 defmodule AudioOutput do
-  @duration 1 / 16_000
+  @duration 1000
 
   def start(oscillator_server) do
     IO.puts "start: #{inspect oscillator_server}"
@@ -16,11 +16,11 @@ defmodule AudioOutput do
     oscillator = GenServer.call(oscillator_server, :get)
     IO.puts "1"
     IO.puts "PcmSampler.sample(#{inspect oscillator}, #{inspect @duration})"
-    data = PcmSampler.sample(oscillator, 1)
+    data = PcmSampler.sample(oscillator, @duration / 1000)
     IO.puts "2: #{inspect data}"
     send(pacat, {self, {:command, data}})
     IO.puts "3"
-    :timer.sleep 1000
+    :timer.sleep @duration
     await(oscillator_server, pacat)
   end
 end
